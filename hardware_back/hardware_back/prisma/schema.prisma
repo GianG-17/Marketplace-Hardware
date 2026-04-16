@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Cliente {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String   @unique
+  senha_hash String
+  telefone   String?
+  endereco   String?
+  criado_em  DateTime @default(now())
+
+  pedidos    Pedido[]
+  avaliacoes Avaliacao[]
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  email        String   @unique
+  senha_hash   String
+  nivel_acesso String   @default("moderador")
+  criado_em    DateTime @default(now())
+}
+
+model Categoria {
+  id             Int       @id @default(autoincrement())
+  nome_categoria String    @unique
+
+  produtos       Produto[]
+}
+
+model Produto {
+  id           Int      @id @default(autoincrement())
+  categoria_id Int
+  nome_modelo  String
+  marca        String
+  preco        Float
+  estoque      Int      @default(0)
+  imagens      String   @default("[]")
+  criado_em    DateTime @default(now())
+
+  categoria    Categoria    @relation(fields: [categoria_id], references: [id])
+  itens_pedido ItemPedido[]
+  avaliacoes   Avaliacao[]
+}
+
+model Pedido {
+  id          Int      @id @default(autoincrement())
+  cliente_id  Int
+  data_pedido DateTime @default(now())
+  valor_total Float
+  status      String   @default("pendente")
+
+  cliente      Cliente      @relation(fields: [cliente_id], references: [id])
+  itens_pedido ItemPedido[]
+}
+
+model ItemPedido {
+  id         Int   @id @default(autoincrement())
+  pedido_id  Int
+  produto_id Int
+  quantidade Int
+  preco      Float
+
+  pedido  Pedido  @relation(fields: [pedido_id], references: [id])
+  produto Produto @relation(fields: [produto_id], references: [id])
+}
+
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  cliente_id Int
+  produto_id Int
+  nota       Int
+  comentario String?
+  criado_em  DateTime @default(now())
+
+  cliente Cliente @relation(fields: [cliente_id], references: [id])
+  produto Produto @relation(fields: [produto_id], references: [id])
+
+  @@unique([cliente_id, produto_id])
+}
