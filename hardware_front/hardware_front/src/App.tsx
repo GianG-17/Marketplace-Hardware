@@ -35,7 +35,6 @@ export default function App() {
         <Route path="/"                  element={<PublicLayout><Home /></PublicLayout>} />
         <Route path="/produtos"          element={<PublicLayout><Produtos /></PublicLayout>} />
         <Route path="/produto/:id"       element={<PublicLayout><ProdutoDetalhe /></PublicLayout>} />
-        <Route path="/categorias"        element={<PublicLayout><Categorias /></PublicLayout>} />
         <Route path="/clientes"          element={<PublicLayout><Clientes /></PublicLayout>} />
         <Route path="/admins"            element={<PublicLayout><Admins /></PublicLayout>} />
         <Route path="/pedidos"           element={<PublicLayout><Pedidos /></PublicLayout>} />
@@ -49,6 +48,7 @@ export default function App() {
         <Route path="/admin"        element={<AdminLayout />}>
           <Route path="dashboard"   element={<AdminDashboard />} />
           <Route path="produtos"    element={<Produtos />} />
+          <Route path="categorias"  element={<Categorias />} />
           <Route path="clientes"    element={<Clientes />} />
           <Route path="propostas"   element={<AdminPropostas />} />
         </Route>

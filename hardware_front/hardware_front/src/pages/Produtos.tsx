@@ -13,7 +13,6 @@ export default function Produtos() {
   const [produtos, setProdutos]         = useState<Produto[]>([])
   const [categorias, setCategorias]     = useState<Categoria[]>([])
   const [editando, setEditando]         = useState<Produto | null>(null)
-  const [aba, setAba]                   = useState<'todos' | 'meus'>('todos')
   const [novaCategoria, setNovaCategoria] = useState('')
   const [mostrarNovaCat, setMostrarNovaCat] = useState(false)
   const [salvandoCat, setSalvandoCat]   = useState(false)
@@ -35,7 +34,46 @@ export default function Produtos() {
     } catch { toast.error('Erro ao carregar dados') }
   }
 
-  useEffect(() => { aba === 'todos' ? carregar() : carregarMeus() }, [aba])
+  useEffect(() => {
+    if (cliente && !admin) {
+      carregarMeus()
+      return
+    }
+    carregar()
+  }, [cliente, admin])
+
+  const imagensParaCampo = (imagens: string): string => {
+    if (!imagens || imagens === '[]') return ''
+    try {
+      const arr = JSON.parse(imagens)
+      if (Array.isArray(arr)) return arr.join('\n')
+      return ''
+    } catch {
+      return imagens
+    }
+  }
+
+  const normalizarImagens = (imagens?: string): string => {
+    if (!imagens || !imagens.trim()) return '[]'
+    const valor = imagens.trim()
+
+    try {
+      const arr = JSON.parse(valor)
+      if (Array.isArray(arr)) {
+        const urls = arr.map(item => String(item).trim()).filter(Boolean)
+        return JSON.stringify(urls)
+      }
+    } catch {
+      // Entrada livre: transforma linhas/valores separados por virgula em JSON valido
+    }
+
+    const urls = valor
+      .split(/\r?\n|,|;/)
+      .map(item => item.trim())
+      .filter(Boolean)
+
+    return JSON.stringify(urls.length > 0 ? urls : [valor])
+  }
 
   async function adicionarCategoria() {
     if (!novaCategoria.trim()) { toast.error('Digite um nome para a categoria'); return }
@@ -60,7 +98,7 @@ export default function Produtos() {
     setValue('descricao',    p.descricao ?? '')
     setValue('preco',        p.preco)
     setValue('estoque',      p.estoque)
-    setValue('imagens',      p.imagens)
+    setValue('imagens',      imagensParaCampo(p.imagens))
     setValue('vendido',      p.vendido)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -74,6 +112,7 @@ export default function Produtos() {
       preco:        Number(data.preco),
       estoque:      Number(data.estoque),
       cliente_id:   editando?.cliente_id ?? (cliente?.id ?? null),
+      imagens:      normalizarImagens(data.imagens),
       vendido:      false,
     }
     try {
@@ -85,7 +124,8 @@ export default function Produtos() {
         toast.success('Produto criado!')
       }
       cancelar()
-      aba === 'todos' ? carregar() : carregarMeus()
+      if (cliente && !admin) carregarMeus()
+      else carregar()
     } catch { toast.error('Erro ao salvar produto') }
   }
 
@@ -93,7 +133,8 @@ export default function Produtos() {
     if (!confirm('Excluir este produto?')) return
     try {
       await deleteProduto(id); toast.success('Produto excluído!')
-      aba === 'todos' ? carregar() : carregarMeus()
+      if (cliente && !admin) carregarMeus()
+      else carregar()
     } catch { toast.error('Erro ao excluir') }
   }
 
@@ -101,7 +142,8 @@ export default function Produtos() {
     if (!confirm('Marcar como VENDIDO? Isso não pode ser desfeito.')) return
     try {
       await marcarVendido(id); toast.success('Marcado como vendido!')
-      aba === 'todos' ? carregar() : carregarMeus()
+      if (cliente && !admin) carregarMeus()
+      else carregar()
     } catch { toast.error('Erro ao marcar vendido') }
   }
 
@@ -111,13 +153,7 @@ export default function Produtos() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-blue-400">Produtos</h2>
-        {cliente && (
-          <div className="flex gap-2">
-            <button onClick={() => setAba('todos')} className={`px-4 py-1 rounded-lg text-sm font-medium transition-colors ${aba === 'todos' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}>Todos</button>
-            <button onClick={() => setAba('meus')}  className={`px-4 py-1 rounded-lg text-sm font-medium transition-colors ${aba === 'meus'  ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}>Meus Produtos</button>
-          </div>
-        )}
+        <h2 className="text-2xl font-bold text-blue-400">{cliente && !admin ? 'Meus Produtos' : 'Produtos'}</h2>
       </div>
 
       {(admin || cliente) && (
@@ -143,7 +179,7 @@ export default function Produtos() {
               </div>
             ) : (
               <div className="bg-gray-900 border border-blue-600 rounded-lg p-3">
-                <p className="text-blue-400 text-sm mb-2">🗂️ Não encontrou a categoria? Crie uma nova:</p>
+                <p className="text-blue-400 text-sm mb-2">Não encontrou a categoria? Crie uma nova:</p>
                 <div className="flex gap-2">
                   <input
                     value={novaCategoria}
@@ -197,11 +233,11 @@ export default function Produtos() {
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm text-gray-400 mb-1">Imagens (URL no formato JSON)</label>
+            <label className="block text-sm text-gray-400 mb-1">Imagens (URLs)</label>
             <input {...register('imagens')}
               className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500"
-              placeholder='["https://exemplo.com/imagem.jpg"]' />
-            <p className="text-gray-600 text-xs mt-1">Use o formato exato com colchetes e aspas duplas</p>
+              placeholder='https://exemplo.com/imagem1.jpg, https://exemplo.com/imagem2.jpg' />
+            <p className="text-gray-600 text-xs mt-1">Você pode inserir uma ou varias URLs separadas por virgula ou quebra de linha.</p>
           </div>
 
           <div className="md:col-span-2">
@@ -220,55 +256,92 @@ export default function Produtos() {
         </form>
       )}
 
-      <div className="bg-gray-800 rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-700">
-            <tr>
-              <th className="text-left px-4 py-3 text-gray-300">#</th>
-              <th className="text-left px-4 py-3 text-gray-300">Modelo</th>
-              <th className="text-left px-4 py-3 text-gray-300">Marca</th>
-              <th className="text-left px-4 py-3 text-gray-300">Categoria</th>
-              <th className="text-left px-4 py-3 text-gray-300">Preço</th>
-              <th className="text-left px-4 py-3 text-gray-300">Status</th>
-              <th className="text-right px-4 py-3 text-gray-300">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {produtos.map(p => (
-              <tr key={p.id} className="border-t border-gray-700">
-                <td className="px-4 py-3 text-gray-400">{p.id}</td>
-                <td className="px-4 py-3 text-gray-100">
-                  {p.nome_modelo}
-                  {p.descricao && <p className="text-gray-500 text-xs truncate max-w-xs">{p.descricao}</p>}
-                </td>
-                <td className="px-4 py-3 text-gray-300">{p.marca}</td>
-                <td className="px-4 py-3 text-gray-300">{nomeCat(p.categoria_id)}</td>
-                <td className="px-4 py-3 text-green-400">R$ {p.preco.toFixed(2)}</td>
-                <td className="px-4 py-3">
+      {cliente && !admin ? (
+        <div className="space-y-3">
+          {produtos.map(p => (
+            <div key={p.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-gray-100 font-semibold">{p.nome_modelo}</p>
+                  <p className="text-sm text-gray-400">{p.marca} • {nomeCat(p.categoria_id)}</p>
+                  {p.descricao && <p className="text-gray-500 text-sm mt-1">{p.descricao}</p>}
+                  <p className="text-green-400 font-semibold mt-2">R$ {p.preco.toFixed(2)}</p>
+                </div>
+                <div className="text-right">
                   {p.vendido
                     ? <span className="text-xs bg-gray-700 text-gray-400 px-2 py-1 rounded">Vendido</span>
                     : <span className="text-xs bg-green-900 text-green-300 px-2 py-1 rounded">Disponível</span>
                   }
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <div className="flex justify-end gap-2 flex-wrap">
-                    {podeEditar(p) && !p.vendido && (
-                      <>
-                        <button onClick={() => iniciarEdicao(p)} className="text-xs bg-yellow-600 hover:bg-yellow-500 px-3 py-1 rounded text-white transition-colors">Editar</button>
-                        <button onClick={() => vendido(p.id)}    className="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition-colors">Vendido</button>
-                        <button onClick={() => excluir(p.id)}    className="text-xs bg-red-700 hover:bg-red-600 px-3 py-1 rounded text-white transition-colors">Excluir</button>
-                      </>
-                    )}
-                  </div>
-                </td>
+                </div>
+              </div>
+
+              <div className="flex gap-2 mt-4 flex-wrap">
+                {podeEditar(p) && !p.vendido && (
+                  <>
+                    <button onClick={() => iniciarEdicao(p)} className="text-xs bg-yellow-600 hover:bg-yellow-500 px-3 py-1 rounded text-white transition-colors">Editar</button>
+                    <button onClick={() => vendido(p.id)}    className="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition-colors">Vendido</button>
+                    <button onClick={() => excluir(p.id)}    className="text-xs bg-red-700 hover:bg-red-600 px-3 py-1 rounded text-white transition-colors">Excluir</button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {produtos.length === 0 && (
+            <div className="bg-gray-800 rounded-xl p-8 text-center text-gray-500">Nenhum produto cadastrado</div>
+          )}
+        </div>
+      ) : (
+        <div className="bg-gray-800 rounded-xl overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-700">
+              <tr>
+                <th className="text-left px-4 py-3 text-gray-300">#</th>
+                <th className="text-left px-4 py-3 text-gray-300">Modelo</th>
+                <th className="text-left px-4 py-3 text-gray-300">Marca</th>
+                <th className="text-left px-4 py-3 text-gray-300">Categoria</th>
+                <th className="text-left px-4 py-3 text-gray-300">Preço</th>
+                <th className="text-left px-4 py-3 text-gray-300">Status</th>
+                <th className="text-right px-4 py-3 text-gray-300">Ações</th>
               </tr>
-            ))}
-            {produtos.length === 0 && (
-              <tr><td colSpan={7} className="text-center text-gray-500 py-8">Nenhum produto cadastrado</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {produtos.map(p => (
+                <tr key={p.id} className="border-t border-gray-700">
+                  <td className="px-4 py-3 text-gray-400">{p.id}</td>
+                  <td className="px-4 py-3 text-gray-100">
+                    {p.nome_modelo}
+                    {p.descricao && <p className="text-gray-500 text-xs truncate max-w-xs">{p.descricao}</p>}
+                  </td>
+                  <td className="px-4 py-3 text-gray-300">{p.marca}</td>
+                  <td className="px-4 py-3 text-gray-300">{nomeCat(p.categoria_id)}</td>
+                  <td className="px-4 py-3 text-green-400">R$ {p.preco.toFixed(2)}</td>
+                  <td className="px-4 py-3">
+                    {p.vendido
+                      ? <span className="text-xs bg-gray-700 text-gray-400 px-2 py-1 rounded">Vendido</span>
+                      : <span className="text-xs bg-green-900 text-green-300 px-2 py-1 rounded">Disponível</span>
+                    }
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <div className="flex justify-end gap-2 flex-wrap">
+                      {podeEditar(p) && !p.vendido && (
+                        <>
+                          <button onClick={() => iniciarEdicao(p)} className="text-xs bg-yellow-600 hover:bg-yellow-500 px-3 py-1 rounded text-white transition-colors">Editar</button>
+                          <button onClick={() => vendido(p.id)}    className="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition-colors">Vendido</button>
+                          <button onClick={() => excluir(p.id)}    className="text-xs bg-red-700 hover:bg-red-600 px-3 py-1 rounded text-white transition-colors">Excluir</button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {produtos.length === 0 && (
+                <tr><td colSpan={7} className="text-center text-gray-500 py-8">Nenhum produto cadastrado</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

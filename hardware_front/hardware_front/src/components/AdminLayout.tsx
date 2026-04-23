@@ -3,10 +3,11 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.tsx'
 
 const links = [
-  { to: '/admin/dashboard',  label: '📊 Visão Geral' },
-  { to: '/admin/produtos',   label: '🖥️ Cadastro de Produtos' },
-  { to: '/admin/clientes',   label: '👥 Controle de Clientes' },
-  { to: '/admin/propostas',  label: '💬 Controle de Propostas' },
+  { to: '/admin/dashboard',  label: 'Visão Geral' },
+  { to: '/admin/produtos',   label: 'Cadastro de Produtos' },
+  { to: '/admin/categorias', label: 'Categorias' },
+  { to: '/admin/clientes',   label: 'Controle de Clientes' },
+  { to: '/admin/propostas',  label: 'Controle de Propostas' },
 ]
 
 export default function AdminLayout() {
@@ -45,7 +46,7 @@ export default function AdminLayout() {
         <div className="p-3 border-t border-gray-800">
           <p className="text-gray-400 text-xs mb-2 truncate">{admin.nome}</p>
           <button onClick={handleLogout} className="w-full text-left text-sm text-red-400 hover:text-red-300 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-            ↩ Sair do Sistema
+            Sair do Sistema
           </button>
         </div>
       </aside>

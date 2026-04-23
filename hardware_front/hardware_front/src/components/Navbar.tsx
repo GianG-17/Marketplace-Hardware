@@ -11,7 +11,6 @@ export default function Navbar() {
         <span className="text-blue-400 font-bold text-lg mr-4">⚙️ HardwareMP</span>
         <NavLink to="/" end className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>Início</NavLink>
         <NavLink to="/produtos"   className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>Produtos</NavLink>
-        <NavLink to="/categorias" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>Categorias</NavLink>
 
         <div className="ml-auto flex items-center gap-3">
           {cliente ? (
@@ -23,7 +22,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <button onClick={() => navigate('/login')} className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg transition-colors">Identifique-se</button>
+              <button onClick={() => navigate('/login')} className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg transition-colors">Login</button>
               <button onClick={() => navigate('/admin/login')} className="text-sm text-gray-500 hover:text-gray-400 transition-colors">Admin</button>
             </>
           )}

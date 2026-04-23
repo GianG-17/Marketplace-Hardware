@@ -120,7 +120,7 @@ export default function ProdutoDetalhe() {
           {produto.cliente && <p className="text-gray-500 text-xs mt-2">Vendedor: {produto.cliente.nome}</p>}
           {!cliente && (
             <p className="mt-4 text-sm text-gray-400">
-              🔒 <button onClick={() => navigate('/login')} className="text-blue-400 hover:underline">Identifique-se</button> para interagir.
+              <button onClick={() => navigate('/login')} className="text-blue-400 hover:underline">Faça Login para Interagir</button>
             </p>
           )}
         </div>
@@ -145,16 +145,15 @@ export default function ProdutoDetalhe() {
                 <form onSubmit={respostaForm.handleSubmit(onResponder)} className="space-y-4">
                   <div>
                     <label className="block text-sm text-gray-400 mb-1">Sua resposta</label>
-                    <textarea {...respostaForm.register('resposta', { required: 'Obrigatório' })} rows={3}
+                    <textarea {...respostaForm.register('resposta')} rows={3}
                       className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500 resize-none"
                       placeholder="Ex: Produto disponível, pode entrar em contato!" />
-                    {respostaForm.formState.errors.resposta && <p className="text-red-400 text-xs mt-1">{respostaForm.formState.errors.resposta.message}</p>}
                   </div>
                   <div>
                     <label className="block text-sm text-gray-400 mb-1">Decisão</label>
                     <select {...respostaForm.register('status')} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500">
-                      <option value="aceita">✅ Aceitar proposta</option>
-                      <option value="recusada">❌ Recusar proposta</option>
+                      <option value="aceita">Aceitar proposta</option>
+                      <option value="recusada">Recusar proposta</option>
                     </select>
                   </div>
                   <div className="flex gap-3">

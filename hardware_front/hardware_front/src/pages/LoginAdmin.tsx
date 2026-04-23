@@ -26,7 +26,6 @@ export default function LoginAdmin() {
     <div className="flex items-center justify-center min-h-[70vh]">
       <div className="bg-gray-800 rounded-xl p-8 w-full max-w-sm shadow-xl">
         <div className="text-center mb-6">
-          <p className="text-4xl mb-3">⚙️</p>
           <h2 className="text-2xl font-bold text-gray-100">Admin: HardwareMP</h2>
         </div>
 
@@ -49,6 +48,14 @@ export default function LoginAdmin() {
 
           <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition-colors">
             Entrar
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="w-full bg-gray-700 hover:bg-gray-600 text-gray-100 py-2 rounded-lg font-semibold transition-colors"
+          >
+            Voltar para tela inicial
           </button>
         </form>
       </div>

@@ -16,6 +16,29 @@ const produtoSchema = z.object({
   vendido:      z.boolean().default(false),
 })
 
+function normalizarImagens(imagens: string): string {
+  if (!imagens || !imagens.trim()) return '[]'
+
+  const valor = imagens.trim()
+
+  try {
+    const arr = JSON.parse(valor)
+    if (Array.isArray(arr)) {
+      const urls = arr.map(item => String(item).trim()).filter(Boolean)
+      return JSON.stringify(urls)
+    }
+  } catch {
+    // Entrada livre: transforma listas separadas por virgula ou quebra de linha em JSON
+  }
+
+  const urls = valor
+    .split(/\r?\n|,|;/)
+    .map(item => item.trim())
+    .filter(Boolean)
+
+  return JSON.stringify(urls.length > 0 ? urls : [valor])
+}
+
 produtosRouter.get('/', async (req, res) => {
   const { categoria_id, cliente_id } = req.query
   const where: Record<string, unknown> = {}
@@ -47,7 +70,13 @@ produtosRouter.get('/:id', async (req, res) => {
 produtosRouter.post('/', async (req, res) => {
   const resultado = produtoSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
-  const produto = await prisma.produto.create({ data: resultado.data })
+
+  const produto = await prisma.produto.create({
+    data: {
+      ...resultado.data,
+      imagens: normalizarImagens(resultado.data.imagens),
+    },
+  })
   res.status(201).json(produto)
 })
 
@@ -55,7 +84,14 @@ produtosRouter.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
   const resultado = produtoSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
-  const produto = await prisma.produto.update({ where: { id }, data: resultado.data })
+
+  const produto = await prisma.produto.update({
+    where: { id },
+    data: {
+      ...resultado.data,
+      imagens: normalizarImagens(resultado.data.imagens),
+    },
+  })
   res.json(produto)
 })
 

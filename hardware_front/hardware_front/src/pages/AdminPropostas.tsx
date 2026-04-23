@@ -63,16 +63,15 @@ export default function AdminPropostas() {
             <form onSubmit={handleSubmit(onResponder)} className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Sua resposta</label>
-                <textarea {...register('resposta', { required: 'Obrigatório' })} rows={3}
+                <textarea {...register('resposta')} rows={3}
                   className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500 resize-none"
                   placeholder="Ex: Produto disponível! Pode retirar na loja..." />
-                {errors.resposta && <p className="text-red-400 text-xs mt-1">{errors.resposta.message}</p>}
               </div>
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Decisão</label>
                 <select {...register('status')} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500">
-                  <option value="aceita">✅ Aceitar proposta</option>
-                  <option value="recusada">❌ Recusar proposta</option>
+                  <option value="aceita">Aceitar proposta</option>
+                  <option value="recusada">Recusar proposta</option>
                 </select>
               </div>
               <div className="flex gap-3">
@@ -106,7 +105,7 @@ export default function AdminPropostas() {
                   <td className="px-4 py-3">
                     {img
                       ? <img src={img} className="w-14 h-10 object-cover rounded" alt="" />
-                      : <span className="text-2xl">🖥️</span>
+                      : <span className="text-xs text-gray-500">Sem imagem</span>
                     }
                   </td>
                   <td className="px-4 py-3 text-gray-100">{p.produto?.nome_modelo}<br /><span className="text-gray-500 text-xs">{p.produto?.marca}</span></td>
