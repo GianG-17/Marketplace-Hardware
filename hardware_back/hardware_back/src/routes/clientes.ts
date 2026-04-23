@@ -5,11 +5,11 @@ import { z } from 'zod'
 export const clientesRouter = Router()
 
 const clienteSchema = z.object({
-  nome:      z.string().min(1),
-  email:     z.email(),
+  nome:       z.string().min(1),
+  email:      z.string().email(),   
   senha_hash: z.string().min(6),
-  telefone:  z.string().optional(),
-  endereco:  z.string().optional(),
+  telefone:   z.string().optional(),
+  endereco:   z.string().optional(),
 })
 
 clientesRouter.get('/', async (req, res) => {
@@ -26,19 +26,24 @@ clientesRouter.get('/:id', async (req, res) => {
     where: { id },
     select: { id: true, nome: true, email: true, telefone: true, endereco: true, criado_em: true },
   })
-  if (!cliente) {
-    res.status(404).json({ erro: 'Cliente não encontrado' })
+  if (!cliente) { res.status(404).json({ erro: 'Cliente não encontrado' }); return }
+  res.json(cliente)
+})
+
+clientesRouter.post('/login', async (req, res) => {
+  const { email, senha } = req.body
+  if (!email || !senha) { res.status(400).json({ erro: 'E-mail e senha obrigatórios' }); return }
+  const cliente = await prisma.cliente.findUnique({ where: { email } })
+  if (!cliente || cliente.senha_hash !== senha) {
+    res.status(401).json({ erro: 'E-mail ou senha inválidos' })
     return
   }
-  res.json(cliente)
+  res.json({ id: cliente.id, nome: cliente.nome, email: cliente.email })
 })
 
 clientesRouter.post('/', async (req, res) => {
   const resultado = clienteSchema.safeParse(req.body)
-  if (!resultado.success) {
-    res.status(400).json({ erro: resultado.error.flatten() })
-    return
-  }
+  if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
   const cliente = await prisma.cliente.create({
     data: resultado.data,
     select: { id: true, nome: true, email: true, criado_em: true },
@@ -49,10 +54,7 @@ clientesRouter.post('/', async (req, res) => {
 clientesRouter.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
   const resultado = clienteSchema.safeParse(req.body)
-  if (!resultado.success) {
-    res.status(400).json({ erro: resultado.error.flatten() })
-    return
-  }
+  if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
   const cliente = await prisma.cliente.update({
     where: { id },
     data: resultado.data,

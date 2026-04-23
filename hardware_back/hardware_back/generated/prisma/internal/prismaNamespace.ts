@@ -390,7 +390,8 @@ export const ModelName = {
   Produto: 'Produto',
   Pedido: 'Pedido',
   ItemPedido: 'ItemPedido',
-  Avaliacao: 'Avaliacao'
+  Avaliacao: 'Avaliacao',
+  Proposta: 'Proposta'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cliente" | "admin" | "categoria" | "produto" | "pedido" | "itemPedido" | "avaliacao"
+    modelProps: "cliente" | "admin" | "categoria" | "produto" | "pedido" | "itemPedido" | "avaliacao" | "proposta"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -928,6 +929,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Proposta: {
+      payload: Prisma.$PropostaPayload<ExtArgs>
+      fields: Prisma.PropostaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PropostaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PropostaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        findFirst: {
+          args: Prisma.PropostaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PropostaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        findMany: {
+          args: Prisma.PropostaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        create: {
+          args: Prisma.PropostaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        createMany: {
+          args: Prisma.PropostaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PropostaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        delete: {
+          args: Prisma.PropostaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        update: {
+          args: Prisma.PropostaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        deleteMany: {
+          args: Prisma.PropostaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PropostaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PropostaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>[]
+        }
+        upsert: {
+          args: Prisma.PropostaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropostaPayload>
+        }
+        aggregate: {
+          args: Prisma.PropostaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProposta>
+        }
+        groupBy: {
+          args: Prisma.PropostaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropostaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PropostaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropostaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1003,11 +1078,14 @@ export type CategoriaScalarFieldEnum = (typeof CategoriaScalarFieldEnum)[keyof t
 export const ProdutoScalarFieldEnum = {
   id: 'id',
   categoria_id: 'categoria_id',
+  cliente_id: 'cliente_id',
   nome_modelo: 'nome_modelo',
   marca: 'marca',
+  descricao: 'descricao',
   preco: 'preco',
   estoque: 'estoque',
   imagens: 'imagens',
+  vendido: 'vendido',
   criado_em: 'criado_em'
 } as const
 
@@ -1046,6 +1124,19 @@ export const AvaliacaoScalarFieldEnum = {
 } as const
 
 export type AvaliacaoScalarFieldEnum = (typeof AvaliacaoScalarFieldEnum)[keyof typeof AvaliacaoScalarFieldEnum]
+
+
+export const PropostaScalarFieldEnum = {
+  id: 'id',
+  cliente_id: 'cliente_id',
+  produto_id: 'produto_id',
+  mensagem: 'mensagem',
+  resposta: 'resposta',
+  status: 'status',
+  criado_em: 'criado_em'
+} as const
+
+export type PropostaScalarFieldEnum = (typeof PropostaScalarFieldEnum)[keyof typeof PropostaScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1131,6 +1222,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**
@@ -1235,6 +1333,7 @@ export type GlobalOmitConfig = {
   pedido?: Prisma.PedidoOmit
   itemPedido?: Prisma.ItemPedidoOmit
   avaliacao?: Prisma.AvaliacaoOmit
+  proposta?: Prisma.PropostaOmit
 }
 
 /* Types for Logging */

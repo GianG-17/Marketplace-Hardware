@@ -234,6 +234,8 @@ export type ClienteWhereInput = {
   criado_em?: Prisma.DateTimeFilter<"Cliente"> | Date | string
   pedidos?: Prisma.PedidoListRelationFilter
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  produtos?: Prisma.ProdutoListRelationFilter
+  propostas?: Prisma.PropostaListRelationFilter
 }
 
 export type ClienteOrderByWithRelationInput = {
@@ -246,6 +248,8 @@ export type ClienteOrderByWithRelationInput = {
   criado_em?: Prisma.SortOrder
   pedidos?: Prisma.PedidoOrderByRelationAggregateInput
   avaliacoes?: Prisma.AvaliacaoOrderByRelationAggregateInput
+  produtos?: Prisma.ProdutoOrderByRelationAggregateInput
+  propostas?: Prisma.PropostaOrderByRelationAggregateInput
 }
 
 export type ClienteWhereUniqueInput = Prisma.AtLeast<{
@@ -261,6 +265,8 @@ export type ClienteWhereUniqueInput = Prisma.AtLeast<{
   criado_em?: Prisma.DateTimeFilter<"Cliente"> | Date | string
   pedidos?: Prisma.PedidoListRelationFilter
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  produtos?: Prisma.ProdutoListRelationFilter
+  propostas?: Prisma.PropostaListRelationFilter
 }, "id" | "email">
 
 export type ClienteOrderByWithAggregationInput = {
@@ -300,6 +306,8 @@ export type ClienteCreateInput = {
   criado_em?: Date | string
   pedidos?: Prisma.PedidoCreateNestedManyWithoutClienteInput
   avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteUncheckedCreateInput = {
@@ -312,6 +320,8 @@ export type ClienteUncheckedCreateInput = {
   criado_em?: Date | string
   pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClienteInput
   avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoUncheckedCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteUpdateInput = {
@@ -323,6 +333,8 @@ export type ClienteUpdateInput = {
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUpdateManyWithoutClienteNestedInput
   avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutClienteNestedInput
 }
 
 export type ClienteUncheckedUpdateInput = {
@@ -335,6 +347,8 @@ export type ClienteUncheckedUpdateInput = {
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClienteNestedInput
   avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUncheckedUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutClienteNestedInput
 }
 
 export type ClienteCreateManyInput = {
@@ -404,6 +418,11 @@ export type ClienteSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type ClienteNullableScalarRelationFilter = {
+  is?: Prisma.ClienteWhereInput | null
+  isNot?: Prisma.ClienteWhereInput | null
+}
+
 export type ClienteScalarRelationFilter = {
   is?: Prisma.ClienteWhereInput
   isNot?: Prisma.ClienteWhereInput
@@ -427,6 +446,22 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type ClienteCreateNestedOneWithoutProdutosInput = {
+  create?: Prisma.XOR<Prisma.ClienteCreateWithoutProdutosInput, Prisma.ClienteUncheckedCreateWithoutProdutosInput>
+  connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutProdutosInput
+  connect?: Prisma.ClienteWhereUniqueInput
+}
+
+export type ClienteUpdateOneWithoutProdutosNestedInput = {
+  create?: Prisma.XOR<Prisma.ClienteCreateWithoutProdutosInput, Prisma.ClienteUncheckedCreateWithoutProdutosInput>
+  connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutProdutosInput
+  upsert?: Prisma.ClienteUpsertWithoutProdutosInput
+  disconnect?: Prisma.ClienteWhereInput | boolean
+  delete?: Prisma.ClienteWhereInput | boolean
+  connect?: Prisma.ClienteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClienteUpdateToOneWithWhereWithoutProdutosInput, Prisma.ClienteUpdateWithoutProdutosInput>, Prisma.ClienteUncheckedUpdateWithoutProdutosInput>
 }
 
 export type ClienteCreateNestedOneWithoutPedidosInput = {
@@ -457,6 +492,86 @@ export type ClienteUpdateOneRequiredWithoutAvaliacoesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClienteUpdateToOneWithWhereWithoutAvaliacoesInput, Prisma.ClienteUpdateWithoutAvaliacoesInput>, Prisma.ClienteUncheckedUpdateWithoutAvaliacoesInput>
 }
 
+export type ClienteCreateNestedOneWithoutPropostasInput = {
+  create?: Prisma.XOR<Prisma.ClienteCreateWithoutPropostasInput, Prisma.ClienteUncheckedCreateWithoutPropostasInput>
+  connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutPropostasInput
+  connect?: Prisma.ClienteWhereUniqueInput
+}
+
+export type ClienteUpdateOneRequiredWithoutPropostasNestedInput = {
+  create?: Prisma.XOR<Prisma.ClienteCreateWithoutPropostasInput, Prisma.ClienteUncheckedCreateWithoutPropostasInput>
+  connectOrCreate?: Prisma.ClienteCreateOrConnectWithoutPropostasInput
+  upsert?: Prisma.ClienteUpsertWithoutPropostasInput
+  connect?: Prisma.ClienteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClienteUpdateToOneWithWhereWithoutPropostasInput, Prisma.ClienteUpdateWithoutPropostasInput>, Prisma.ClienteUncheckedUpdateWithoutPropostasInput>
+}
+
+export type ClienteCreateWithoutProdutosInput = {
+  nome: string
+  email: string
+  senha_hash: string
+  telefone?: string | null
+  endereco?: string | null
+  criado_em?: Date | string
+  pedidos?: Prisma.PedidoCreateNestedManyWithoutClienteInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutClienteInput
+}
+
+export type ClienteUncheckedCreateWithoutProdutosInput = {
+  id?: number
+  nome: string
+  email: string
+  senha_hash: string
+  telefone?: string | null
+  endereco?: string | null
+  criado_em?: Date | string
+  pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClienteInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutClienteInput
+}
+
+export type ClienteCreateOrConnectWithoutProdutosInput = {
+  where: Prisma.ClienteWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClienteCreateWithoutProdutosInput, Prisma.ClienteUncheckedCreateWithoutProdutosInput>
+}
+
+export type ClienteUpsertWithoutProdutosInput = {
+  update: Prisma.XOR<Prisma.ClienteUpdateWithoutProdutosInput, Prisma.ClienteUncheckedUpdateWithoutProdutosInput>
+  create: Prisma.XOR<Prisma.ClienteCreateWithoutProdutosInput, Prisma.ClienteUncheckedCreateWithoutProdutosInput>
+  where?: Prisma.ClienteWhereInput
+}
+
+export type ClienteUpdateToOneWithWhereWithoutProdutosInput = {
+  where?: Prisma.ClienteWhereInput
+  data: Prisma.XOR<Prisma.ClienteUpdateWithoutProdutosInput, Prisma.ClienteUncheckedUpdateWithoutProdutosInput>
+}
+
+export type ClienteUpdateWithoutProdutosInput = {
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pedidos?: Prisma.PedidoUpdateManyWithoutClienteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutClienteNestedInput
+}
+
+export type ClienteUncheckedUpdateWithoutProdutosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClienteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutClienteNestedInput
+}
+
 export type ClienteCreateWithoutPedidosInput = {
   nome: string
   email: string
@@ -465,6 +580,8 @@ export type ClienteCreateWithoutPedidosInput = {
   endereco?: string | null
   criado_em?: Date | string
   avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteUncheckedCreateWithoutPedidosInput = {
@@ -476,6 +593,8 @@ export type ClienteUncheckedCreateWithoutPedidosInput = {
   endereco?: string | null
   criado_em?: Date | string
   avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoUncheckedCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteCreateOrConnectWithoutPedidosInput = {
@@ -502,6 +621,8 @@ export type ClienteUpdateWithoutPedidosInput = {
   endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutClienteNestedInput
 }
 
 export type ClienteUncheckedUpdateWithoutPedidosInput = {
@@ -513,6 +634,8 @@ export type ClienteUncheckedUpdateWithoutPedidosInput = {
   endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUncheckedUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutClienteNestedInput
 }
 
 export type ClienteCreateWithoutAvaliacoesInput = {
@@ -523,6 +646,8 @@ export type ClienteCreateWithoutAvaliacoesInput = {
   endereco?: string | null
   criado_em?: Date | string
   pedidos?: Prisma.PedidoCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteUncheckedCreateWithoutAvaliacoesInput = {
@@ -534,6 +659,8 @@ export type ClienteUncheckedCreateWithoutAvaliacoesInput = {
   endereco?: string | null
   criado_em?: Date | string
   pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoUncheckedCreateNestedManyWithoutClienteInput
+  propostas?: Prisma.PropostaUncheckedCreateNestedManyWithoutClienteInput
 }
 
 export type ClienteCreateOrConnectWithoutAvaliacoesInput = {
@@ -560,6 +687,8 @@ export type ClienteUpdateWithoutAvaliacoesInput = {
   endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUpdateManyWithoutClienteNestedInput
 }
 
 export type ClienteUncheckedUpdateWithoutAvaliacoesInput = {
@@ -571,6 +700,74 @@ export type ClienteUncheckedUpdateWithoutAvaliacoesInput = {
   endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUncheckedUpdateManyWithoutClienteNestedInput
+  propostas?: Prisma.PropostaUncheckedUpdateManyWithoutClienteNestedInput
+}
+
+export type ClienteCreateWithoutPropostasInput = {
+  nome: string
+  email: string
+  senha_hash: string
+  telefone?: string | null
+  endereco?: string | null
+  criado_em?: Date | string
+  pedidos?: Prisma.PedidoCreateNestedManyWithoutClienteInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoCreateNestedManyWithoutClienteInput
+}
+
+export type ClienteUncheckedCreateWithoutPropostasInput = {
+  id?: number
+  nome: string
+  email: string
+  senha_hash: string
+  telefone?: string | null
+  endereco?: string | null
+  criado_em?: Date | string
+  pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClienteInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutClienteInput
+  produtos?: Prisma.ProdutoUncheckedCreateNestedManyWithoutClienteInput
+}
+
+export type ClienteCreateOrConnectWithoutPropostasInput = {
+  where: Prisma.ClienteWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClienteCreateWithoutPropostasInput, Prisma.ClienteUncheckedCreateWithoutPropostasInput>
+}
+
+export type ClienteUpsertWithoutPropostasInput = {
+  update: Prisma.XOR<Prisma.ClienteUpdateWithoutPropostasInput, Prisma.ClienteUncheckedUpdateWithoutPropostasInput>
+  create: Prisma.XOR<Prisma.ClienteCreateWithoutPropostasInput, Prisma.ClienteUncheckedCreateWithoutPropostasInput>
+  where?: Prisma.ClienteWhereInput
+}
+
+export type ClienteUpdateToOneWithWhereWithoutPropostasInput = {
+  where?: Prisma.ClienteWhereInput
+  data: Prisma.XOR<Prisma.ClienteUpdateWithoutPropostasInput, Prisma.ClienteUncheckedUpdateWithoutPropostasInput>
+}
+
+export type ClienteUpdateWithoutPropostasInput = {
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pedidos?: Prisma.PedidoUpdateManyWithoutClienteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUpdateManyWithoutClienteNestedInput
+}
+
+export type ClienteUncheckedUpdateWithoutPropostasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  senha_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endereco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClienteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutClienteNestedInput
+  produtos?: Prisma.ProdutoUncheckedUpdateManyWithoutClienteNestedInput
 }
 
 
@@ -581,11 +778,15 @@ export type ClienteUncheckedUpdateWithoutAvaliacoesInput = {
 export type ClienteCountOutputType = {
   pedidos: number
   avaliacoes: number
+  produtos: number
+  propostas: number
 }
 
 export type ClienteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pedidos?: boolean | ClienteCountOutputTypeCountPedidosArgs
   avaliacoes?: boolean | ClienteCountOutputTypeCountAvaliacoesArgs
+  produtos?: boolean | ClienteCountOutputTypeCountProdutosArgs
+  propostas?: boolean | ClienteCountOutputTypeCountPropostasArgs
 }
 
 /**
@@ -612,6 +813,20 @@ export type ClienteCountOutputTypeCountAvaliacoesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.AvaliacaoWhereInput
 }
 
+/**
+ * ClienteCountOutputType without action
+ */
+export type ClienteCountOutputTypeCountProdutosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProdutoWhereInput
+}
+
+/**
+ * ClienteCountOutputType without action
+ */
+export type ClienteCountOutputTypeCountPropostasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropostaWhereInput
+}
+
 
 export type ClienteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -623,6 +838,8 @@ export type ClienteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   criado_em?: boolean
   pedidos?: boolean | Prisma.Cliente$pedidosArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Cliente$avaliacoesArgs<ExtArgs>
+  produtos?: boolean | Prisma.Cliente$produtosArgs<ExtArgs>
+  propostas?: boolean | Prisma.Cliente$propostasArgs<ExtArgs>
   _count?: boolean | Prisma.ClienteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cliente"]>
 
@@ -660,6 +877,8 @@ export type ClienteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type ClienteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pedidos?: boolean | Prisma.Cliente$pedidosArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Cliente$avaliacoesArgs<ExtArgs>
+  produtos?: boolean | Prisma.Cliente$produtosArgs<ExtArgs>
+  propostas?: boolean | Prisma.Cliente$propostasArgs<ExtArgs>
   _count?: boolean | Prisma.ClienteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClienteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -670,6 +889,8 @@ export type $ClientePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     pedidos: Prisma.$PedidoPayload<ExtArgs>[]
     avaliacoes: Prisma.$AvaliacaoPayload<ExtArgs>[]
+    produtos: Prisma.$ProdutoPayload<ExtArgs>[]
+    propostas: Prisma.$PropostaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1075,6 +1296,8 @@ export interface Prisma__ClienteClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   pedidos<T extends Prisma.Cliente$pedidosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cliente$pedidosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PedidoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   avaliacoes<T extends Prisma.Cliente$avaliacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cliente$avaliacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvaliacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  produtos<T extends Prisma.Cliente$produtosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cliente$produtosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProdutoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  propostas<T extends Prisma.Cliente$propostasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cliente$propostasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1549,6 +1772,54 @@ export type Cliente$avaliacoesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AvaliacaoScalarFieldEnum | Prisma.AvaliacaoScalarFieldEnum[]
+}
+
+/**
+ * Cliente.produtos
+ */
+export type Cliente$produtosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Produto
+   */
+  select?: Prisma.ProdutoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Produto
+   */
+  omit?: Prisma.ProdutoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProdutoInclude<ExtArgs> | null
+  where?: Prisma.ProdutoWhereInput
+  orderBy?: Prisma.ProdutoOrderByWithRelationInput | Prisma.ProdutoOrderByWithRelationInput[]
+  cursor?: Prisma.ProdutoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProdutoScalarFieldEnum | Prisma.ProdutoScalarFieldEnum[]
+}
+
+/**
+ * Cliente.propostas
+ */
+export type Cliente$propostasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Proposta
+   */
+  select?: Prisma.PropostaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Proposta
+   */
+  omit?: Prisma.PropostaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropostaInclude<ExtArgs> | null
+  where?: Prisma.PropostaWhereInput
+  orderBy?: Prisma.PropostaOrderByWithRelationInput | Prisma.PropostaOrderByWithRelationInput[]
+  cursor?: Prisma.PropostaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropostaScalarFieldEnum | Prisma.PropostaScalarFieldEnum[]
 }
 
 /**

@@ -18,6 +18,8 @@ model Cliente {
 
   pedidos    Pedido[]
   avaliacoes Avaliacao[]
+  produtos   Produto[]
+  propostas  Proposta[]
 }
 
 model Admin {
@@ -39,16 +41,21 @@ model Categoria {
 model Produto {
   id           Int      @id @default(autoincrement())
   categoria_id Int
+  cliente_id   Int?
   nome_modelo  String
   marca        String
+  descricao    String?
   preco        Float
   estoque      Int      @default(0)
   imagens      String   @default("[]")
+  vendido      Boolean  @default(false)
   criado_em    DateTime @default(now())
 
   categoria    Categoria    @relation(fields: [categoria_id], references: [id])
+  cliente      Cliente?     @relation(fields: [cliente_id], references: [id])
   itens_pedido ItemPedido[]
   avaliacoes   Avaliacao[]
+  propostas    Proposta[]
 }
 
 model Pedido {
@@ -85,4 +92,17 @@ model Avaliacao {
   produto Produto @relation(fields: [produto_id], references: [id])
 
   @@unique([cliente_id, produto_id])
+}
+
+model Proposta {
+  id          Int      @id @default(autoincrement())
+  cliente_id  Int
+  produto_id  Int
+  mensagem    String
+  resposta    String?
+  status      String   @default("aguardando") 
+  criado_em   DateTime @default(now())
+
+  cliente Cliente @relation(fields: [cliente_id], references: [id])
+  produto Produto @relation(fields: [produto_id], references: [id])
 }

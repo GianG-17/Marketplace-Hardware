@@ -52,3 +52,8 @@ export type ItemPedido = Prisma.ItemPedidoModel
  * 
  */
 export type Avaliacao = Prisma.AvaliacaoModel
+/**
+ * Model Proposta
+ * 
+ */
+export type Proposta = Prisma.PropostaModel
