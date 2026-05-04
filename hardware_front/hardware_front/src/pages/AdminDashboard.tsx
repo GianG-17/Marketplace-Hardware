@@ -57,7 +57,6 @@ export default function AdminDashboard() {
     <div>
       <h2 className="text-2xl font-bold text-gray-100 mb-8">Visão Geral do Sistema</h2>
 
-      {/* Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         {cards.map(c => (
           <div key={c.label} className={`${c.bg} border ${c.cor} rounded-xl p-5 text-center`}>
@@ -67,10 +66,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Gráficos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        {/* Gráfico de barras — Victory */}
         <div className="bg-gray-800 rounded-xl p-6">
           <h3 className="text-lg font-semibold text-gray-100 mb-2">Produtos por Categoria</h3>
           {dadosBar.length === 0 ? (
@@ -111,8 +107,6 @@ export default function AdminDashboard() {
             </VictoryChart>
           )}
         </div>
-
-        {/* Gráfico de pizza — Victory */}
         <div className="bg-gray-800 rounded-xl p-6">
           <h3 className="text-lg font-semibold text-gray-100 mb-2">Propostas por Status</h3>
           <VictoryPie
@@ -129,7 +123,6 @@ export default function AdminDashboard() {
               />
             }
           />
-          {/* Legenda manual */}
           <div className="flex flex-wrap justify-center gap-4 mt-2">
             {dados.propostasPorStatus.map(d => (
               <div key={d.status} className="flex items-center gap-1.5">

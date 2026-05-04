@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import {
   getAvaliacoes, createAvaliacao, updateAvaliacao, deleteAvaliacao,
-  getClientes, getProdutos,
-  type Avaliacao, type AvaliacaoInput, type Cliente, type Produto,
+  getClientes, getProdutos, getPropostas,
+  type Avaliacao, type AvaliacaoInput, type Cliente, type Produto, type Proposta,
 } from '../services/api.ts'
 
 function Estrelas({ nota }: { nota: number }) {
@@ -19,13 +19,14 @@ export default function Avaliacoes() {
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([])
   const [clientes, setClientes]     = useState<Cliente[]>([])
   const [produtos, setProdutos]     = useState<Produto[]>([])
+  const [propostas, setPropostas]   = useState<Proposta[]>([])
   const [editando, setEditando]     = useState<Avaliacao | null>(null)
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<AvaliacaoInput>()
 
   async function carregar() {
     try {
-      const [a, c, p] = await Promise.all([getAvaliacoes(), getClientes(), getProdutos()])
-      setAvaliacoes(a); setClientes(c); setProdutos(p)
+      const [a, c, p, pr] = await Promise.all([getAvaliacoes(), getClientes(), getProdutos(), getPropostas()])
+      setAvaliacoes(a); setClientes(c); setProdutos(p); setPropostas(pr)
     } catch {
       toast.error('Erro ao carregar dados')
     }
@@ -37,6 +38,7 @@ export default function Avaliacoes() {
     setEditando(a)
     setValue('cliente_id', a.cliente_id)
     setValue('produto_id', a.produto_id)
+    setValue('proposta_id', a.proposta_id)
     setValue('nota',       a.nota)
     setValue('comentario', a.comentario ?? '')
   }
@@ -44,10 +46,22 @@ export default function Avaliacoes() {
   function cancelar() { setEditando(null); reset() }
 
   async function onSubmit(data: AvaliacaoInput) {
+    const propostaId = editando?.proposta_id ?? propostas.find(
+      p => p.cliente_id === Number(data.cliente_id) &&
+        p.produto_id === Number(data.produto_id) &&
+        p.status === 'aceita',
+    )?.id
+
+    if (!propostaId) {
+      toast.error('Não foi encontrada uma proposta aceita para este cliente e produto')
+      return
+    }
+
     const payload = {
       ...data,
       cliente_id: Number(data.cliente_id),
       produto_id: Number(data.produto_id),
+      proposta_id: propostaId,
       nota:       Number(data.nota),
     }
     try {

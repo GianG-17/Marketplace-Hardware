@@ -57,11 +57,23 @@ export default function ProdutoDetalhe() {
 
   async function onAvaliar(data: AvaliacaoForm) {
     if (!cliente) return
+    const propostaAceita = propostas.find(p => p.cliente_id === cliente.id && p.status === 'aceita') ?? null
+    if (!propostaAceita) {
+      toast.error('Você precisa de uma proposta aceita para avaliar este produto.')
+      return
+    }
     try {
-      await createAvaliacao({ cliente_id: cliente.id, produto_id: Number(id), nota: Number(data.nota), comentario: data.comentario } as AvaliacaoInput)
+      await createAvaliacao({ cliente_id: cliente.id, produto_id: Number(id), proposta_id: propostaAceita.id, nota: Number(data.nota), comentario: data.comentario } as AvaliacaoInput)
       toast.success('Avaliação enviada!')
       avalForm.reset(); carregar()
-    } catch { toast.error('Você já avaliou este produto.') }
+    } catch (error) {
+      const status = error && typeof error === 'object' && 'status' in error ? error.status : undefined
+      if (status === 409) {
+        toast.error('Você já avaliou este produto.')
+        return
+      }
+      toast.error('Erro ao enviar avaliação.')
+    }
   }
 
   async function onProposta(data: PropostaForm) {
@@ -90,6 +102,8 @@ export default function ProdutoDetalhe() {
 
   const mediaNotas   = avaliacoes.length ? (avaliacoes.reduce((s, a) => s + a.nota, 0) / avaliacoes.length).toFixed(1) : null
   const jaFezProposta = propostas.some(p => p.cliente_id === cliente?.id)
+  const temPropostaAceita = propostas.some(p => p.cliente_id === cliente?.id && p.status === 'aceita')
+  const jaAvaliouProduto = avaliacoes.some(a => a.cliente_id === cliente?.id)
   const ehDono        = produto?.cliente_id != null && produto.cliente_id === cliente?.id
 
   if (carregando) return <div className="text-center text-gray-400 py-20">Carregando...</div>
@@ -101,7 +115,6 @@ export default function ProdutoDetalhe() {
     <div className="max-w-4xl mx-auto">
       <button onClick={() => navigate(-1)} className="text-blue-400 hover:underline text-sm mb-6 inline-block">← Voltar</button>
 
-      {/* Card do produto */}
       <div className="bg-gray-800 rounded-xl overflow-hidden mb-8 flex flex-col md:flex-row">
         <div className="md:w-1/2 bg-gray-700 h-64 md:h-auto flex items-center justify-center">
           {img ? <img src={img} alt={produto.nome_modelo} className="w-full h-full object-cover" /> : <span className="text-7xl">🖥️</span>}
@@ -126,14 +139,12 @@ export default function ProdutoDetalhe() {
         </div>
       </div>
 
-      {/* ── ÁREA DO DONO: propostas recebidas ── */}
       {ehDono && (
         <div className="bg-gray-800 rounded-xl p-6 mb-8">
           <h3 className="text-lg font-semibold text-gray-100 mb-4">
             📬 Propostas recebidas ({propostas.length})
           </h3>
 
-          {/* Modal de resposta */}
           {respondendo && (
             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-2xl">
@@ -199,7 +210,6 @@ export default function ProdutoDetalhe() {
         </div>
       )}
 
-      {/* ── ÁREA DO COMPRADOR: proposta + avaliação ── */}
       {cliente && !produto.vendido && !ehDono && (
         <div className="bg-gray-800 rounded-xl p-6 mb-8">
           <div className="flex gap-3 mb-5">
@@ -227,28 +237,33 @@ export default function ProdutoDetalhe() {
           )}
 
           {aba === 'avaliar' && (
-            <form onSubmit={avalForm.handleSubmit(onAvaliar)} className="space-y-4">
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Nota (1 a 5)</label>
-                <select {...avalForm.register('nota', { required: 'Selecione uma nota' })} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500">
-                  <option value="">Selecione...</option>
-                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{'★'.repeat(n)} ({n})</option>)}
-                </select>
-                {avalForm.formState.errors.nota && <p className="text-red-400 text-xs mt-1">{avalForm.formState.errors.nota.message}</p>}
-              </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Comentário</label>
-                <textarea {...avalForm.register('comentario')} rows={3}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500 resize-none"
-                  placeholder="Descreva sua experiência..." />
-              </div>
-              <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">Enviar Avaliação</button>
-            </form>
+            !temPropostaAceita ? (
+              <p className="text-gray-400 text-sm">Você precisa de uma proposta aceita para avaliar este produto.</p>
+            ) : jaAvaliouProduto ? (
+              <p className="text-gray-400 text-sm">Você já avaliou este produto.</p>
+            ) : (
+              <form onSubmit={avalForm.handleSubmit(onAvaliar)} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Nota (1 a 5)</label>
+                  <select {...avalForm.register('nota', { required: 'Selecione uma nota' })} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500">
+                    <option value="">Selecione...</option>
+                    {[1,2,3,4,5].map(n => <option key={n} value={n}>{'★'.repeat(n)} ({n})</option>)}
+                  </select>
+                  {avalForm.formState.errors.nota && <p className="text-red-400 text-xs mt-1">{avalForm.formState.errors.nota.message}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Comentário</label>
+                  <textarea {...avalForm.register('comentario')} rows={3}
+                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:border-blue-500 resize-none"
+                    placeholder="Descreva sua experiência..." />
+                </div>
+                <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">Enviar Avaliação</button>
+              </form>
+            )
           )}
         </div>
       )}
 
-      {/* Avaliações */}
       <div>
         <h3 className="text-lg font-semibold text-gray-100 mb-4">Avaliações ({avaliacoes.length})</h3>
         {avaliacoes.length === 0 ? (

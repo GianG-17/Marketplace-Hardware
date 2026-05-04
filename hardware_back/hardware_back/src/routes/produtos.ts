@@ -28,7 +28,6 @@ function normalizarImagens(imagens: string): string {
       return JSON.stringify(urls)
     }
   } catch {
-    // Entrada livre: transforma listas separadas por virgula ou quebra de linha em JSON
   }
 
   const urls = valor
@@ -41,6 +40,7 @@ function normalizarImagens(imagens: string): string {
 
 produtosRouter.get('/', async (req, res) => {
   const { categoria_id, cliente_id } = req.query
+  console.log('[GET /produtos] query:', { categoria_id, cliente_id })
   const where: Record<string, unknown> = {}
   if (categoria_id) where.categoria_id = Number(categoria_id)
   if (cliente_id)   where.cliente_id   = Number(cliente_id)
@@ -55,6 +55,7 @@ produtosRouter.get('/', async (req, res) => {
 
 produtosRouter.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[GET /produtos/:id] id:', id)
   const produto = await prisma.produto.findUnique({
     where: { id },
     include: {
@@ -68,6 +69,7 @@ produtosRouter.get('/:id', async (req, res) => {
 })
 
 produtosRouter.post('/', async (req, res) => {
+  console.log('[POST /produtos] body:', req.body)
   const resultado = produtoSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
 
@@ -82,6 +84,7 @@ produtosRouter.post('/', async (req, res) => {
 
 produtosRouter.put('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[PUT /produtos/:id] id:', id, 'body:', req.body)
   const resultado = produtoSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
 

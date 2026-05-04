@@ -30,6 +30,7 @@ export type AvaliacaoAvgAggregateOutputType = {
   id: number | null
   cliente_id: number | null
   produto_id: number | null
+  proposta_id: number | null
   nota: number | null
 }
 
@@ -37,6 +38,7 @@ export type AvaliacaoSumAggregateOutputType = {
   id: number | null
   cliente_id: number | null
   produto_id: number | null
+  proposta_id: number | null
   nota: number | null
 }
 
@@ -44,6 +46,7 @@ export type AvaliacaoMinAggregateOutputType = {
   id: number | null
   cliente_id: number | null
   produto_id: number | null
+  proposta_id: number | null
   nota: number | null
   comentario: string | null
   criado_em: Date | null
@@ -53,6 +56,7 @@ export type AvaliacaoMaxAggregateOutputType = {
   id: number | null
   cliente_id: number | null
   produto_id: number | null
+  proposta_id: number | null
   nota: number | null
   comentario: string | null
   criado_em: Date | null
@@ -62,6 +66,7 @@ export type AvaliacaoCountAggregateOutputType = {
   id: number
   cliente_id: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario: number
   criado_em: number
@@ -73,6 +78,7 @@ export type AvaliacaoAvgAggregateInputType = {
   id?: true
   cliente_id?: true
   produto_id?: true
+  proposta_id?: true
   nota?: true
 }
 
@@ -80,6 +86,7 @@ export type AvaliacaoSumAggregateInputType = {
   id?: true
   cliente_id?: true
   produto_id?: true
+  proposta_id?: true
   nota?: true
 }
 
@@ -87,6 +94,7 @@ export type AvaliacaoMinAggregateInputType = {
   id?: true
   cliente_id?: true
   produto_id?: true
+  proposta_id?: true
   nota?: true
   comentario?: true
   criado_em?: true
@@ -96,6 +104,7 @@ export type AvaliacaoMaxAggregateInputType = {
   id?: true
   cliente_id?: true
   produto_id?: true
+  proposta_id?: true
   nota?: true
   comentario?: true
   criado_em?: true
@@ -105,6 +114,7 @@ export type AvaliacaoCountAggregateInputType = {
   id?: true
   cliente_id?: true
   produto_id?: true
+  proposta_id?: true
   nota?: true
   comentario?: true
   criado_em?: true
@@ -201,6 +211,7 @@ export type AvaliacaoGroupByOutputType = {
   id: number
   cliente_id: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario: string | null
   criado_em: Date
@@ -233,6 +244,7 @@ export type AvaliacaoWhereInput = {
   id?: Prisma.IntFilter<"Avaliacao"> | number
   cliente_id?: Prisma.IntFilter<"Avaliacao"> | number
   produto_id?: Prisma.IntFilter<"Avaliacao"> | number
+  proposta_id?: Prisma.IntFilter<"Avaliacao"> | number
   nota?: Prisma.IntFilter<"Avaliacao"> | number
   comentario?: Prisma.StringNullableFilter<"Avaliacao"> | string | null
   criado_em?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
@@ -244,6 +256,7 @@ export type AvaliacaoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   comentario?: Prisma.SortOrderInput | Prisma.SortOrder
   criado_em?: Prisma.SortOrder
@@ -259,6 +272,7 @@ export type AvaliacaoWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AvaliacaoWhereInput | Prisma.AvaliacaoWhereInput[]
   cliente_id?: Prisma.IntFilter<"Avaliacao"> | number
   produto_id?: Prisma.IntFilter<"Avaliacao"> | number
+  proposta_id?: Prisma.IntFilter<"Avaliacao"> | number
   nota?: Prisma.IntFilter<"Avaliacao"> | number
   comentario?: Prisma.StringNullableFilter<"Avaliacao"> | string | null
   criado_em?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
@@ -270,6 +284,7 @@ export type AvaliacaoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   comentario?: Prisma.SortOrderInput | Prisma.SortOrder
   criado_em?: Prisma.SortOrder
@@ -287,12 +302,14 @@ export type AvaliacaoScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
   cliente_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
   produto_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
+  proposta_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
   nota?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
   comentario?: Prisma.StringNullableWithAggregatesFilter<"Avaliacao"> | string | null
   criado_em?: Prisma.DateTimeWithAggregatesFilter<"Avaliacao"> | Date | string
 }
 
 export type AvaliacaoCreateInput = {
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
@@ -304,12 +321,14 @@ export type AvaliacaoUncheckedCreateInput = {
   id?: number
   cliente_id: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
 }
 
 export type AvaliacaoUpdateInput = {
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -321,6 +340,7 @@ export type AvaliacaoUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   cliente_id?: Prisma.IntFieldUpdateOperationsInput | number
   produto_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -330,12 +350,14 @@ export type AvaliacaoCreateManyInput = {
   id?: number
   cliente_id: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
 }
 
 export type AvaliacaoUpdateManyMutationInput = {
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -345,6 +367,7 @@ export type AvaliacaoUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   cliente_id?: Prisma.IntFieldUpdateOperationsInput | number
   produto_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -369,6 +392,7 @@ export type AvaliacaoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   comentario?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
@@ -378,6 +402,7 @@ export type AvaliacaoAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
 }
 
@@ -385,6 +410,7 @@ export type AvaliacaoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   comentario?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
@@ -394,6 +420,7 @@ export type AvaliacaoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   comentario?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
@@ -403,6 +430,7 @@ export type AvaliacaoSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cliente_id?: Prisma.SortOrder
   produto_id?: Prisma.SortOrder
+  proposta_id?: Prisma.SortOrder
   nota?: Prisma.SortOrder
 }
 
@@ -491,6 +519,7 @@ export type AvaliacaoUncheckedUpdateManyWithoutProdutoNestedInput = {
 }
 
 export type AvaliacaoCreateWithoutClienteInput = {
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
@@ -500,6 +529,7 @@ export type AvaliacaoCreateWithoutClienteInput = {
 export type AvaliacaoUncheckedCreateWithoutClienteInput = {
   id?: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
@@ -538,12 +568,14 @@ export type AvaliacaoScalarWhereInput = {
   id?: Prisma.IntFilter<"Avaliacao"> | number
   cliente_id?: Prisma.IntFilter<"Avaliacao"> | number
   produto_id?: Prisma.IntFilter<"Avaliacao"> | number
+  proposta_id?: Prisma.IntFilter<"Avaliacao"> | number
   nota?: Prisma.IntFilter<"Avaliacao"> | number
   comentario?: Prisma.StringNullableFilter<"Avaliacao"> | string | null
   criado_em?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
 }
 
 export type AvaliacaoCreateWithoutProdutoInput = {
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
@@ -553,6 +585,7 @@ export type AvaliacaoCreateWithoutProdutoInput = {
 export type AvaliacaoUncheckedCreateWithoutProdutoInput = {
   id?: number
   cliente_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
@@ -587,12 +620,14 @@ export type AvaliacaoUpdateManyWithWhereWithoutProdutoInput = {
 export type AvaliacaoCreateManyClienteInput = {
   id?: number
   produto_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
 }
 
 export type AvaliacaoUpdateWithoutClienteInput = {
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -602,6 +637,7 @@ export type AvaliacaoUpdateWithoutClienteInput = {
 export type AvaliacaoUncheckedUpdateWithoutClienteInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   produto_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -610,6 +646,7 @@ export type AvaliacaoUncheckedUpdateWithoutClienteInput = {
 export type AvaliacaoUncheckedUpdateManyWithoutClienteInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   produto_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -618,12 +655,14 @@ export type AvaliacaoUncheckedUpdateManyWithoutClienteInput = {
 export type AvaliacaoCreateManyProdutoInput = {
   id?: number
   cliente_id: number
+  proposta_id: number
   nota: number
   comentario?: string | null
   criado_em?: Date | string
 }
 
 export type AvaliacaoUpdateWithoutProdutoInput = {
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -633,6 +672,7 @@ export type AvaliacaoUpdateWithoutProdutoInput = {
 export type AvaliacaoUncheckedUpdateWithoutProdutoInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   cliente_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -641,6 +681,7 @@ export type AvaliacaoUncheckedUpdateWithoutProdutoInput = {
 export type AvaliacaoUncheckedUpdateManyWithoutProdutoInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   cliente_id?: Prisma.IntFieldUpdateOperationsInput | number
+  proposta_id?: Prisma.IntFieldUpdateOperationsInput | number
   nota?: Prisma.IntFieldUpdateOperationsInput | number
   comentario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -652,6 +693,7 @@ export type AvaliacaoSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   cliente_id?: boolean
   produto_id?: boolean
+  proposta_id?: boolean
   nota?: boolean
   comentario?: boolean
   criado_em?: boolean
@@ -663,6 +705,7 @@ export type AvaliacaoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   cliente_id?: boolean
   produto_id?: boolean
+  proposta_id?: boolean
   nota?: boolean
   comentario?: boolean
   criado_em?: boolean
@@ -674,6 +717,7 @@ export type AvaliacaoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   cliente_id?: boolean
   produto_id?: boolean
+  proposta_id?: boolean
   nota?: boolean
   comentario?: boolean
   criado_em?: boolean
@@ -685,12 +729,13 @@ export type AvaliacaoSelectScalar = {
   id?: boolean
   cliente_id?: boolean
   produto_id?: boolean
+  proposta_id?: boolean
   nota?: boolean
   comentario?: boolean
   criado_em?: boolean
 }
 
-export type AvaliacaoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cliente_id" | "produto_id" | "nota" | "comentario" | "criado_em", ExtArgs["result"]["avaliacao"]>
+export type AvaliacaoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cliente_id" | "produto_id" | "proposta_id" | "nota" | "comentario" | "criado_em", ExtArgs["result"]["avaliacao"]>
 export type AvaliacaoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cliente?: boolean | Prisma.ClienteDefaultArgs<ExtArgs>
   produto?: boolean | Prisma.ProdutoDefaultArgs<ExtArgs>
@@ -714,6 +759,7 @@ export type $AvaliacaoPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: number
     cliente_id: number
     produto_id: number
+    proposta_id: number
     nota: number
     comentario: string | null
     criado_em: Date
@@ -1145,6 +1191,7 @@ export interface AvaliacaoFieldRefs {
   readonly id: Prisma.FieldRef<"Avaliacao", 'Int'>
   readonly cliente_id: Prisma.FieldRef<"Avaliacao", 'Int'>
   readonly produto_id: Prisma.FieldRef<"Avaliacao", 'Int'>
+  readonly proposta_id: Prisma.FieldRef<"Avaliacao", 'Int'>
   readonly nota: Prisma.FieldRef<"Avaliacao", 'Int'>
   readonly comentario: Prisma.FieldRef<"Avaliacao", 'String'>
   readonly criado_em: Prisma.FieldRef<"Avaliacao", 'DateTime'>

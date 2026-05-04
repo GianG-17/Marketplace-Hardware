@@ -31,7 +31,6 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Área pública */}
         <Route path="/"                  element={<PublicLayout><Home /></PublicLayout>} />
         <Route path="/produtos"          element={<PublicLayout><Produtos /></PublicLayout>} />
         <Route path="/produto/:id"       element={<PublicLayout><ProdutoDetalhe /></PublicLayout>} />
@@ -43,7 +42,6 @@ export default function App() {
         <Route path="/minhas-avaliacoes" element={<PublicLayout><MinhasAvaliacoes /></PublicLayout>} />
         <Route path="/minhas-propostas"  element={<PublicLayout><MinhasPropostas /></PublicLayout>} />
 
-        {/* Área admin — sem Navbar pública */}
         <Route path="/admin/login"  element={<div className="min-h-screen bg-gray-950 text-gray-100"><LoginAdmin /></div>} />
         <Route path="/admin"        element={<AdminLayout />}>
           <Route path="dashboard"   element={<AdminDashboard />} />

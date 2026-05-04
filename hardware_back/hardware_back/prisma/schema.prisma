@@ -84,6 +84,7 @@ model Avaliacao {
   id         Int      @id @default(autoincrement())
   cliente_id Int
   produto_id Int
+  proposta_id Int
   nota       Int
   comentario String?
   criado_em  DateTime @default(now())

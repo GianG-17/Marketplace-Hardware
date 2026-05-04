@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useAuth } from '../context/AuthContext.tsx'
 import {
@@ -9,6 +10,7 @@ import {
 } from '../services/api.ts'
 
 export default function Produtos() {
+  const navigate = useNavigate()
   const { cliente, admin } = useAuth()
   const [produtos, setProdutos]         = useState<Produto[]>([])
   const [categorias, setCategorias]     = useState<Categoria[]>([])
@@ -64,7 +66,6 @@ export default function Produtos() {
         return JSON.stringify(urls)
       }
     } catch {
-      // Entrada livre: transforma linhas/valores separados por virgula em JSON valido
     }
 
     const urls = valor
@@ -158,8 +159,6 @@ export default function Produtos() {
 
       {(admin || cliente) && (
         <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-800 rounded-xl p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-
-          {/* Categoria com opção de adicionar nova */}
           <div className="md:col-span-2">
             <label className="block text-sm text-gray-400 mb-1">Categoria</label>
             {!mostrarNovaCat ? (
@@ -172,12 +171,14 @@ export default function Produtos() {
                   </select>
                   {errors.categoria_id && <p className="text-red-400 text-xs mt-1">{errors.categoria_id.message}</p>}
                 </div>
-                <button type="button" onClick={() => setMostrarNovaCat(true)}
-                  className="text-xs bg-gray-700 hover:bg-gray-600 text-blue-400 px-3 py-2 rounded-lg transition-colors whitespace-nowrap border border-gray-600">
-                  + Nova categoria
-                </button>
+                {admin && (
+                  <button type="button" onClick={() => setMostrarNovaCat(true)}
+                    className="text-xs bg-gray-700 hover:bg-gray-600 text-blue-400 px-3 py-2 rounded-lg transition-colors whitespace-nowrap border border-gray-600">
+                    + Nova categoria
+                  </button>
+                )}
               </div>
-            ) : (
+            ) : (admin ? (
               <div className="bg-gray-900 border border-blue-600 rounded-lg p-3">
                 <p className="text-blue-400 text-sm mb-2">Não encontrou a categoria? Crie uma nova:</p>
                 <div className="flex gap-2">
@@ -198,7 +199,7 @@ export default function Produtos() {
                   </button>
                 </div>
               </div>
-            )}
+            ) : null)}
           </div>
 
           <div>
@@ -261,8 +262,10 @@ export default function Produtos() {
           {produtos.map(p => (
             <div key={p.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
               <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-gray-100 font-semibold">{p.nome_modelo}</p>
+                <div className="flex-1">
+                  <button onClick={() => navigate(`/produto/${p.id}`)} className="text-blue-400 hover:underline text-left">
+                    <p className="text-gray-100 font-semibold">{p.nome_modelo}</p>
+                  </button>
                   <p className="text-sm text-gray-400">{p.marca} • {nomeCat(p.categoria_id)}</p>
                   {p.descricao && <p className="text-gray-500 text-sm mt-1">{p.descricao}</p>}
                   <p className="text-green-400 font-semibold mt-2">R$ {p.preco.toFixed(2)}</p>

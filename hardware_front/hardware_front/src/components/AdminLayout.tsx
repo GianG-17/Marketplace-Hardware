@@ -27,7 +27,6 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen bg-gray-950">
-      {/* Sidebar */}
       <aside className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col">
         <div className="p-4 border-b border-gray-800">
           <p className="text-blue-400 font-bold text-sm">⚙️ HardwareMP: Admin</p>
@@ -50,8 +49,6 @@ export default function AdminLayout() {
           </button>
         </div>
       </aside>
-
-      {/* Conteúdo */}
       <main className="flex-1 p-8 overflow-auto">
         <Outlet />
       </main>

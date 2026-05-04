@@ -60,7 +60,9 @@ export default function MinhasPropostas() {
                 return (
                   <tr key={p.id} className="border-t border-gray-700">
                     <td className="px-4 py-3">
-                      <p className="text-gray-100 font-medium">{p.produto?.nome_modelo ?? '—'}</p>
+                      <button onClick={() => navigate(`/produto/${p.produto_id}`)} className="text-blue-400 hover:underline text-left">
+                        <p className="text-gray-100 font-medium">{p.produto?.nome_modelo ?? '—'}</p>
+                      </button>
                       <p className="text-gray-400 text-xs">{p.produto?.marca}</p>
                     </td>
                     <td className="px-4 py-3">

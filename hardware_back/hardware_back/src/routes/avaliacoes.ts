@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { prisma } from '../../lib/prisma.ts'
+import { prisma } from '../../lib/prisma'
 import { z } from 'zod'
 
 export const avaliacoesRouter = Router()
@@ -7,12 +7,14 @@ export const avaliacoesRouter = Router()
 const avaliacaoSchema = z.object({
   cliente_id: z.number().int().positive(),
   produto_id: z.number().int().positive(),
+  proposta_id: z.number().int().positive(),
   nota:       z.number().int().min(1).max(5),
   comentario: z.string().optional(),
 })
 
 avaliacoesRouter.get('/', async (req, res) => {
   const { produto_id, cliente_id } = req.query
+  console.log('[GET /avaliacoes] query:', { produto_id, cliente_id })
 
   const where: Record<string, unknown> = {}
   if (produto_id) where.produto_id = Number(produto_id)
@@ -31,6 +33,7 @@ avaliacoesRouter.get('/', async (req, res) => {
 
 avaliacoesRouter.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[GET /avaliacoes/:id] id:', id)
   const avaliacao = await prisma.avaliacao.findUnique({
     where: { id },
     include: {
@@ -43,10 +46,26 @@ avaliacoesRouter.get('/:id', async (req, res) => {
 })
 
 avaliacoesRouter.post('/', async (req, res) => {
+  console.log('[POST /avaliacoes] body:', req.body)
   const resultado = avaliacaoSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
-  const avaliacao = await prisma.avaliacao.create({ data: resultado.data })
-  res.status(201).json(avaliacao)
+
+  try {
+    const avaliacao = await prisma.avaliacao.create({ data: resultado.data })
+    res.status(201).json(avaliacao)
+  } catch (error) {
+    console.error('ERRO CREATE AVALIACAO', error)
+    const code = error && typeof error === 'object' && 'code' in error ? (error as any).code : undefined
+    if (code === 'P2002') {
+      res.status(409).json({ erro: 'Você já avaliou este produto.' })
+      return
+    }
+    if (code === 'ECONNREFUSED') {
+      res.status(503).json({ erro: 'Erro de conexão com o banco de dados. Tente novamente mais tarde.' })
+      return
+    }
+    res.status(500).json({ erro: 'Erro ao criar avaliação' })
+  }
 })
 
 avaliacoesRouter.put('/:id', async (req, res) => {

@@ -17,6 +17,7 @@ const respostaSchema = z.object({
 
 propostasRouter.get('/', async (req, res) => {
   const { cliente_id, produto_id } = req.query
+  console.log('[GET /propostas] query:', { cliente_id, produto_id })
   const where: Record<string, unknown> = {}
   if (cliente_id) where.cliente_id = Number(cliente_id)
   if (produto_id) where.produto_id = Number(produto_id)
@@ -34,6 +35,7 @@ propostasRouter.get('/', async (req, res) => {
 
 propostasRouter.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[GET /propostas/:id] id:', id)
   const proposta = await prisma.proposta.findUnique({
     where: { id },
     include: {
@@ -46,6 +48,7 @@ propostasRouter.get('/:id', async (req, res) => {
 })
 
 propostasRouter.post('/', async (req, res) => {
+  console.log('[POST /propostas] body:', req.body)
   const resultado = propostaSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
   const proposta = await prisma.proposta.create({ data: resultado.data })
@@ -54,6 +57,7 @@ propostasRouter.post('/', async (req, res) => {
 
 propostasRouter.patch('/:id/responder', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[PATCH /propostas/:id/responder] id:', id, 'body:', req.body)
   const resultado = respostaSchema.safeParse(req.body)
   if (!resultado.success) { res.status(400).json({ erro: resultado.error.flatten() }); return }
   const proposta = await prisma.proposta.update({
@@ -65,6 +69,7 @@ propostasRouter.patch('/:id/responder', async (req, res) => {
 
 propostasRouter.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  console.log('[DELETE /propostas/:id] id:', id)
   await prisma.proposta.delete({ where: { id } })
   res.status(204).send()
 })

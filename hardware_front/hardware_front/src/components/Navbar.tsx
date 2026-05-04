@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto flex flex-wrap items-center gap-4">
         <span className="text-blue-400 font-bold text-lg mr-4">⚙️ HardwareMP</span>
         <NavLink to="/" end className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>Início</NavLink>
-        <NavLink to="/produtos"   className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>Produtos</NavLink>
+        <NavLink to="/produtos"   className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-400' : 'text-gray-400 hover:text-gray-100'}`}>{cliente ? 'Meus Produtos' : 'Produtos'}</NavLink>
 
         <div className="ml-auto flex items-center gap-3">
           {cliente ? (

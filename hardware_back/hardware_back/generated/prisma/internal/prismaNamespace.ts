@@ -1118,6 +1118,7 @@ export const AvaliacaoScalarFieldEnum = {
   id: 'id',
   cliente_id: 'cliente_id',
   produto_id: 'produto_id',
+  proposta_id: 'proposta_id',
   nota: 'nota',
   comentario: 'comentario',
   criado_em: 'criado_em'

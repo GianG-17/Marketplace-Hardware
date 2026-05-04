@@ -65,7 +65,6 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-blue-400 mb-2">⚙️ Hardware Marketplace</h1>
         <p className="text-gray-400 text-lg mb-6">Componentes de PC: placas, processadores, memórias e muito mais.</p>
 
-        {/* Barra de pesquisa - Item 2 */}
         <div className="flex justify-center gap-2 mb-2">
           <div className="relative w-full max-w-lg">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
